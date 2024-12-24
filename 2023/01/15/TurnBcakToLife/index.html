@@ -1,0 +1,2159 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta name="author" content="drinktoomuchsax">
+
+
+  <meta name="subtitle" content="Nice to meet u">
+
+
+
+
+<title>作息调整日记 | drinktoomuchsax&#39;s blog</title>
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+
+    $("#toggle-dark").click((event) => {
+      const isAppearanceTransition = document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (!isAppearanceTransition) {
+        toggleDark()
+        return
+      }
+      const x = event.clientX
+      const y = event.clientY
+      const endRadius = Math.hypot(
+        Math.max(x, innerWidth - x),
+        Math.max(y, innerHeight - y),
+      )
+      const transition = document.startViewTransition(async () => {
+        toggleDark()
+      })
+
+      transition.ready
+        .then(() => {
+          const isDark = document.documentElement.classList.contains("dark")
+          const clipPath = [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ]
+          document.documentElement.animate(
+            {
+              clipPath: isDark
+                ? [...clipPath].reverse()
+                : clipPath,
+            },
+            {
+              duration: 400,
+              easing: 'ease-out',
+              pseudoElement: isDark
+                ? '::view-transition-old(root)'
+                : '::view-transition-new(root)',
+            },
+          )
+        })
+    });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/logo.svg" alt="drinktoomuchsax's blog" />
+          drinktoomuchsax&#39;s blog
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        作息调整日记
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/xbmlz">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Github" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        作息调整日记
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2023-01-16</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>37 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>10.2k words</span>
+          </span>
+          
+            <span class="text-gray-400">·</span>
+            <span class="flex items-center gap-1">
+              <iconify-icon width="16" icon="icon-park-outline:box" class="mr-2"></iconify-icon>
+              <a class="article-category-link" href="/categories/ordinary/">ordinary</a>
+            </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h1 id="矫正作息"><a href="#矫正作息" class="headerlink" title="矫正作息"></a>矫正作息</h1><p>过去的一个学期，我和我们寝室的作息时间十分阴间，凌晨3点左右上床，10点左右起床。这样带来的社交时差常常困扰着我。</p>
+<p>于是趁着这个寒假，回到了清净的老家，我想要做出一些改变，顺便得到一些关于我的睡眠的事实。</p>
+<p>首先介绍一下我的初始条件：</p>
+<p>睡觉是我的一大爱好，我很喜欢充足睡眠后起床时感觉，所以我一般不会限制自己的起床时间。</p>
+<p>我最近的入眠和起床时间如下图：</p>
+<p><img src="/Untitled.png" alt="小米穿戴的截图"></p>
+<p>实验能够知道以下几个结论：</p>
+<ul>
+<li>每天最早能够提早多久入睡<ul>
+<li>答：取决于前一天的睡眠时间，低于“睡饱饱时间”，就能早睡，高于“睡饱饱时间”，就得晚睡。</li>
+</ul>
+</li>
+<li>每天能提前多久起床<ul>
+<li>起床是唯一自己能够控制的行动，提前多久都行，但是是否起床跟很多东西相关</li>
+</ul>
+</li>
+<li>早起后的强光治疗是否有效</li>
+<li>每天睡多少小时足够，即”睡饱饱时间”是多少。<ul>
+<li>足够的定义：醒来后不需要中间午睡或补觉也不会感到疲惫，在入睡时间前感到比较强的困倦；效率和精力保持在正常水平。</li>
+<li>背景：一般自然醒后时间会在中午，所以没有午觉一说。最近这几天睡眠时间都在9小时以上，经过一天到凌晨3点也少有疲惫感，或者疲惫感没有强大到痛苦。</li>
+</ul>
+</li>
+</ul>
+<p>首先，在寒假的背景下（1月13日的日出在7点49，且往后延迟），我希望的作息是：7点起床，睡9小时。</p>
+<p>记忆中有说法称每天能够提前1小时睡觉，我先保守提前30min，从2.00开始，这样到大年初一那天刚好能够达到目标。</p>
+<h1 id="一些定义"><a href="#一些定义" class="headerlink" title="一些定义"></a>一些定义</h1><p><strong>昨天、今天与明天的分界线</strong>：不同于以0点为分界线，我习惯以睡眠为界来区分今天明天。例如我从14日熬夜到15日到凌晨5点，在15日0点到5点我依然是清醒状态，期间我回复了一封读者邮件。之后一觉睡到15日下午3点，起床后我会说：“昨天我回复了一份读者邮件”</p>
+<p><strong>入睡时间</strong>：全称“进入睡眠状态的时间”，也可以叫“睡着的时候”。</p>
+<p><strong>上床时间</strong>：上床时间是赖床时间的“反义词”，不一定指上床的时间，而是指准备开始入睡的时间，即放下手机、平板，开始闭眼准备进入睡眠状态。一般因失眠等情况会比入睡时间提前。</p>
+<p><strong>作息</strong>：作息包括三个信息，入睡、起床时间以及睡眠时间</p>
+<h1 id="1月13日"><a href="#1月13日" class="headerlink" title="1月13日"></a>1月13日</h1><p>（起床后写）昨天确实是2.00上床的，但是之前那个<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1m8411P7v7">讨论音乐的黄金时代</a>的视频太过nb，搞得我一直在发散地思考，同时也在惊叹，终于看到中文互联网出现这种硬核内容创造者（虽然有的地方可能有点错误），同时又焦虑了一下未来。</p>
+<p>所以时间一下就到2.47（我记得很清楚）。</p>
+<p>秉承假期自然醒原则，我没有设置闹钟，于是自然醒时间来到了11.25，睡眠时间不到9小时，所以昨晚不错，整体大概延迟了半小时。</p>
+<p>今天设置一下闹钟，挑战一下提前1小时，也就是1.00入睡，同时明天的起床时间来到10.00。</p>
+<p>今天就先这样，等会看看书就睡。</p>
+<p>奶奶家，2022.1.14.00.49</p>
+<h1 id="1月14日"><a href="#1月14日" class="headerlink" title="1月14日"></a>1月14日</h1><p>昨天上床时间大概是1点24分，根据手环，入睡时间是1点55，结合1月13日入睡时间2点47，这样看来，入睡时间能够提前1小时。</p>
+<p>虽然入睡时间相较于预计时间推迟了1小时，但是得益于闹钟，清醒的时间仍然是在预计的早晨10点，但是接下来刷了1小时手机，真正的起床时间是在11点。</p>
+<p>总共睡眠时间是8小时，一天下来没有感到明显困倦的时刻。</p>
+<h1 id="1月15日"><a href="#1月15日" class="headerlink" title="1月15日"></a>1月15日</h1><p>之前的记录不是很便于回顾，所以迭代为以下形式</p>
+<h3 id="睡眠时间记录："><a href="#睡眠时间记录：" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><ol>
+<li>上床时间：1-15 01:24</li>
+<li>入睡时间：1-15 2:07</li>
+<li>起床时间：1-15 11:28</li>
+<li>睡眠长度：9h21min</li>
+<li>赖床时间：around 10min</li>
+</ol>
+<ul>
+<li>计划上床时间：1-15 00:45</li>
+<li>计划入睡时间：1-15 01:00</li>
+<li>计划起床时间：1-15 10:00</li>
+<li>计划睡眠长度：9h</li>
+<li>计划赖床时间：5min</li>
+</ul>
+<h3 id="感受："><a href="#感受：" class="headerlink" title="感受："></a>感受：</h3><p>1月15日入睡时间和1月14日相差无几，起床时间，由于闹钟的位置太远，所以并没有起效。</p>
+<p>因此清醒时间来到了11:28。</p>
+<p>今天没有完成指标，今天目调整如下：</p>
+<ul>
+<li>计划上床时间：1-16 00:45</li>
+<li>计划入睡时间：1-16 01:00</li>
+<li>计划起床时间：1-16 10:00</li>
+<li>计划睡眠长度：9h</li>
+<li>计划赖床时间：5min</li>
+</ul>
+<p>今晚挑战一下提前1小时入睡，以及赖床时间不要想1月14号那样长达1小时。</p>
+<h1 id="1月16日"><a href="#1月16日" class="headerlink" title="1月16日"></a>1月16日</h1><h3 id="睡眠时间记录：-1"><a href="#睡眠时间记录：-1" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><p>昨天的形式还是有点不好看，继续迭代为表格</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-16 01:15</td>
+<td>1-16 00:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-16 01:57</td>
+<td>1-16 01:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-16 11:54</td>
+<td>1-16 10:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>9h57min</td>
+<td>9h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>around5min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-1"><a href="#感受：-1" class="headerlink" title="感受："></a>感受：</h3><p>昨天晚上确实按照计划上床，但是因为忍不住想panRC的事情，不知不觉拖到了2点；以及致命的是10点的闹钟并没有闹醒我。所以需要调整一下闹钟，转到使用v35。</p>
+<p>以及发现一件有趣的事情，14、15、16这三天，我似乎都有在9点半醒来的记忆，起码今天是有的。所以明天计划改为9点半起床，因为昨天没有成功提前一小时入睡，今天继续挑战，睡眠时间来到了8h30min，看看明天点困倦程度。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-16 00:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-16 01:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-16 9:30</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>8h30min</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h1 id="1月17日"><a href="#1月17日" class="headerlink" title="1月17日"></a>1月17日</h1><h3 id="睡眠时间记录：-2"><a href="#睡眠时间记录：-2" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-17 01:15</td>
+<td>1-17 00:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-17 02:48</td>
+<td>1-17 01:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-17 12:47</td>
+<td>1-17 09:30</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>9h59min</td>
+<td>8h30min</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>30min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-2"><a href="#感受：-2" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：接近10h小时的睡眠时间，并没有困倦</p>
+<p><strong>变换项目以及原因</strong>：入睡时间延后差不多2小时，原因是睡前思考了未来的规划，没想到这一想就是2小时。起床时间也大大延后，差不多中午1点才起床，原因是9点半的闹钟我确实听到并且关掉，但是这耗时短短几秒，埋头再睡不是问题。</p>
+<p><strong>结论</strong>：9小时左右确实能够做到一天不困倦。</p>
+<p>明天计划保持不变，争取1点入睡，然后改变闹钟程度，使我能够在9点半起床。我大概率还是会失眠，不过没关系，正好可以得到睡6至7小时会不会困。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-18 00:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-18 01:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-18 09:30</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>8h30min</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h1 id="1月18日"><a href="#1月18日" class="headerlink" title="1月18日"></a>1月18日</h1><h3 id="睡眠时间记录：-3"><a href="#睡眠时间记录：-3" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-18 01:07</td>
+<td>1-18 00:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-18 02:23</td>
+<td>1-18 01:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-18 11:38</td>
+<td>1-18 09:30</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>9h15min</td>
+<td>9h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>around10min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-3"><a href="#感受：-3" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天依旧是接近10小时的睡眠，所以并不困倦，但是长时间看屏幕眼睛有点疲劳。</p>
+<p><strong>变换项目以及原因</strong>：比较突出的是起床时间，今天并没有像计划的9点30起床，原因并不是昨天的闹钟问题，分散的两个闹钟让我在9点半的时间非常清醒，而是因为其他原因导致没能及时起床，今天做好心理建设，明天看看能不能克服下面的问题。</p>
+<p><strong>新发现</strong>：</p>
+<ol>
+<li>大概知道了这几天晚上睡不着的原因，因为我已经睡了接近10个小时，晚上想要入睡比较困难。可以采用的手段有：<ul>
+<li>在不困的状态下摄入褪黑素，但是手边没有褪黑素，所以作罢</li>
+<li>白天早起，减少睡眠时间，在计划时间就能感到困倦，辅以咖啡来保持白天清醒。鉴于曾经的经验，减小到6小时的睡眠会让我在白天就感到非常困倦，然后趴在桌子上补觉，破坏了晚上困倦状态。综合来看，实验把睡眠时间缩短到7个半小时会不会有效。</li>
+</ul>
+</li>
+<li><strong>我的“睡饱饱时间”大概在9小时多一点</strong>，最近五天在9小时的睡眠时间下，几乎每天都是2点左右睡，11点30份左右起起，维持了一个稳定的作息。</li>
+</ol>
+<p>结合新发现，今晚入睡，明早起床计划如下：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-19 00:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-19 02:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-19 09:30</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>7h30min</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h1 id="1月19日"><a href="#1月19日" class="headerlink" title="1月19日"></a>1月19日</h1><h3 id="睡眠时间记录：-4"><a href="#睡眠时间记录：-4" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-19 01:55</td>
+<td>1-19 00:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-19 03:48</td>
+<td>1-19 01:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-19 11:28</td>
+<td>1-19 09:30</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>7h40min</td>
+<td>7h30min</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>50min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-4"><a href="#感受：-4" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天9h15min的睡眠时间下，并没有感到特别困。</p>
+<p><strong>变换项目以及原因</strong>：昨天入睡时间和今天起床时间都延迟了2小时左右，但是万幸，睡眠时间依然满足7h30min，这样就能观察今天的困倦程度，大概知道持续充足睡眠的情况下突然少觉的感受。</p>
+<p>今晚可能出现两种情况：</p>
+<ol>
+<li>晚上依旧睡不着，2点左右入睡。睡满9小时后11点起床。</li>
+<li>晚上感到十分困倦，00点就能入睡，睡满9小时后9点起床。</li>
+</ol>
+<p>我希望是第二种情况，于是今晚需要提前上床，且入睡前不能消费一些我十分感兴趣的话题，以免像前两天一样瞎想睡不着。</p>
+<p>所以今天计划如下：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-19 23:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-20 00:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-20 09:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>9h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h1 id="1月20日"><a href="#1月20日" class="headerlink" title="1月20日"></a>1月20日</h1><h3 id="睡眠时间记录：-5"><a href="#睡眠时间记录：-5" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-20 00:10</td>
+<td>1-19 23:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-20 00:58</td>
+<td>1-20 00:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-20 11:55</td>
+<td>1-20 09:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>10h57min</td>
+<td>9h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>20min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-5"><a href="#感受：-5" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不到8小时的睡眠时间，结合前几天的充足睡眠下，并没有感到困倦。</p>
+<p><strong>变换项目以及原因</strong>：昨天入睡时间没能像计划一样提前2小时，但是提前了1个小时也让我非常满意。但是但是但是！今天又没有起来，又光速关掉了闹钟：（</p>
+<p><strong>感悟</strong>：</p>
+<ul>
+<li>作息(入睡、起床时间和睡眠时间)是否具有自稳趋势？<ul>
+<li>总的来说，这个跟环境有很大关系，在学校作息就十分不规律，在奶奶家相对就规律很多，但是离每天完全一样还有一定距离。</li>
+<li>但是相较于在学校，在奶奶家的这段时间，作息规律了很多(可以看看小米穿戴上的1月份之前和1月份之后)。在这种环境下，作息的具体内容（入睡、起床时间和睡眠时间）之间，似乎有这么一种规律：假设一个人的睡饱饱时间是一定的，为9小时。<strong>当少睡了1小时</strong>，身体会因为感动困倦，想要获得1小时的睡眠来补足睡饱饱时间，所以你在白天生活的过程中，不时会感到困倦，当你坚持住，时间来到晚上，你就能够提前一小时入睡。同样的道理，<strong>当多睡了1小时</strong>，那当天的入睡时间就会推迟1小时。（声明：以上数字只是为了方便理解瞎编的数字，实际情况肯定更复杂。但是就我自己数据来看，是有这么一个睡少了要补觉，睡多了晚上就睡不着的趋势）</li>
+</ul>
+</li>
+<li>如何保持作息<ul>
+<li>睡满“睡饱饱时间”</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>在8小时的睡眠时间下，确实能够提前入睡大约1小时。假设9小时是充足睡眠时间的话，睡眠时间每减少1小时，入睡时间就会提前1小时；相反，睡眠时间没增加1小时，入睡时间就会推迟1小时。那么我今天睡了差不多11个小时，就会</li>
+<li>假如以上假设成立，那么我想要在7点起床，且不想白天困倦，需要睡9小时。那我得在晚上11点入睡。但是我需要从凌晨2点时间转移到23点，中间相差3个小时，**这意味着我需要减少睡眠时间到6小时(9h-6h&#x3D;3h)**。再根据今天睡眠时间超出2小时(11h)，所以我今天可能4点才能够入睡。于是我需要明天早上10点起床，这样就能够减少睡眠时间到6小时，于是我就能够在明天晚上23点入睡，这样再睡够9小时，就能够早餐7点起床。<ol>
+<li>不确定性：整个计划中，不确定的一个点在于我是否真的能够4点才入睡，还是说因为睡眠具有稳定性，我2点就能入睡。因此需要根据我入睡的时间动态修改明天早晨起床的时间，只要保证睡眠时间是6个小时就好。</li>
+<li>难点：整个计划中，难点有三个，<strong>一个</strong>是明天我只睡了6小时，白天是否能够挺住不睡；<strong>二个是</strong>明天早晨10点和后天早晨7点我能否起床。第三是明天是除夕夜，不可能晚上23点睡觉。<ol>
+<li>对于第一个难点，可以补充一些咖啡，但是身处老家，身边没有，作罢作罢。只能靠不可靠的意志力了。</li>
+<li>对于第二个难点，同样有一部分的意志力考验。除此之外可以设置n个闹钟。</li>
+<li>对于第三个困难，无解。</li>
+<li>挺住，加油！</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>所以今天明天后天作息计划修改如下：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>1月20日计划时间</th>
+<th>1月21日计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-21 01:30</td>
+<td>1-22 01:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-21 02:00(易变)</td>
+<td>1-22 02:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-21 07:00</td>
+<td>1-22 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>5h</td>
+<td>5h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>5min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<p>通过两天连续的早起，强行把作息起床时间对齐，期间可以小憩以保证白天精力。</p>
+<h1 id="1月21日"><a href="#1月21日" class="headerlink" title="1月21日"></a>1月21日</h1><h3 id="睡眠时间记录：-6"><a href="#睡眠时间记录：-6" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>计划时间</th>
+<th>实际时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-21 01:30</td>
+<td>1-21 03:32</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-23 02:00</td>
+<td>1-21 03:32</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-21 07:00</td>
+<td>1-21 11:08</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>5h</td>
+<td>7h35min</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>5min</td>
+<td>20min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-6"><a href="#感受：-6" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天在写昨天点睡眠回顾的时候的时候感到有点困，大了几个哈欠，基本上这种情况上床就能睡着，不知道是睡太久的原因还是房间太冷的原因。</p>
+<p>但是但是，晚上看完几集德剧后，冒险点开来Bilibili，于是乎还是熬到了03:32才入睡</p>
+<p><strong>变换项目以及原因</strong>：昨天因为bilibili入睡时间相就变晚；然后其实今天早上09:00其实已经醒来，但是就是懒啊，没有起来，明天一定要起床！只要跑通一次，这种方法就验证成功。</p>
+<h1 id="1月22日"><a href="#1月22日" class="headerlink" title="1月22日"></a>1月22日</h1><h3 id="睡眠时间记录：-7"><a href="#睡眠时间记录：-7" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-22 3:27</td>
+<td>1-22 01:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-22 3:27</td>
+<td>1-22 02:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-22 12:15</td>
+<td>1-22 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>8h48min</td>
+<td>5h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>20min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-7"><a href="#感受：-7" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天过年，困个屁</p>
+<p><strong>变换项目以及原因</strong>：昨天又又又又又又熬夜看bilibili，测。</p>
+<p><strong>明天计划如下</strong>：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-23 01:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-23 02:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-23 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>5h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h1 id="1月23日"><a href="#1月23日" class="headerlink" title="1月23日"></a>1月23日</h1><h3 id="睡眠时间记录：-8"><a href="#睡眠时间记录：-8" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-23 00:30</td>
+<td>1-23 01:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-23 01:14</td>
+<td>1-23 02:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-23 11:17</td>
+<td>1-23 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>10h3min</td>
+<td>5h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>10min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-8"><a href="#感受：-8" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不困</p>
+<p><strong>变换项目以及原因</strong>：今天没起来，测，当前的作息已经僵化了，看看明天能否改变。</p>
+<p>明天同样是计划7点起床。</p>
+<h1 id="1月24日"><a href="#1月24日" class="headerlink" title="1月24日"></a>1月24日</h1><h3 id="睡眠时间记录：-9"><a href="#睡眠时间记录：-9" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-24 01:30</td>
+<td>1-24 00:00</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-24 01:40</td>
+<td>1-24 00:30</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-24 07:09</td>
+<td>1-24 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>5h29min</td>
+<td>6h30min</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>20min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-9"><a href="#感受：-9" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天并不困倦，果然接近10h的睡眠时间让人兴奋。</p>
+<p><strong>变换项目以及原因</strong>：昨天入睡时间比计划稍晚，因为昨天10h的作息，所以这也合理。比较令人意外的是我在7点半成功起床，可能原因如下：</p>
+<ul>
+<li>闹钟成功叫醒我，这是重要的第一步</li>
+<li>但是让我坚持没有继续睡下去的原因是，之前梦到了潘多拉，然后意难平地起床。。</li>
+</ul>
+<p>综上，成功提前起床作息需要两个条件：</p>
+<ol>
+<li>有效的闹钟</li>
+<li>心中有一个愿景。</li>
+</ol>
+<p>明天计划如下（写在1月25日）</p>
+<h1 id="1月25日"><a href="#1月25日" class="headerlink" title="1月25日"></a>1月25日</h1><h3 id="睡眠时间记录：-10"><a href="#睡眠时间记录：-10" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-24 23:55</td>
+<td>1-24 22:30</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-25 00:08</td>
+<td>1-25 07:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-25 12:10</td>
+<td>1-25 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>12h2min</td>
+<td>8h30min</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>5min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-10"><a href="#感受：-10" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天晚上明显感觉到了困倦，因此很早就上床了。虽然刷了一下bilibili，但是还是在12点前入睡了。</p>
+<p><strong>变换项目以及原因</strong>：今天起床时间回到了12点，睡眠时间达到了惊人点12h，背后的原因可能有：</p>
+<ul>
+<li>闹钟不够响</li>
+<li>&#x2F;* * * * * * *</li>
+</ul>
+<h1 id="1月26日"><a href="#1月26日" class="headerlink" title="1月26日"></a>1月26日</h1><h3 id="睡眠时间记录：-11"><a href="#睡眠时间记录：-11" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-26 03:55</td>
+<td>1-26 23:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-26 04:17</td>
+<td>1-26 00:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-26 11:52</td>
+<td>1-26 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>7h35min</td>
+<td>7h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>23min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-11"><a href="#感受：-11" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天没有什么困倦的感受</p>
+<p><strong>变换项目以及原因</strong>：昨天入睡时间很晚，原因可能有下：</p>
+<ul>
+<li>前天睡眠时间长达12h</li>
+<li>昨天睡前看了令人兴奋的内容，导致我后面一直在瞎想</li>
+</ul>
+<p>如何避免呢？</p>
+<ul>
+<li>到点强制起床</li>
+<li>前一天不要睡太久（also到点强制起床）</li>
+</ul>
+<p><strong>值得一提的是：间隔5分钟的闹钟确实有效</strong></p>
+<h1 id="1月27日"><a href="#1月27日" class="headerlink" title="1月27日"></a>1月27日</h1><h3 id="睡眠时间记录：-12"><a href="#睡眠时间记录：-12" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-27 01:20</td>
+<td>1-26 23:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-27 01:43</td>
+<td>1-27 00:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-27 08:05</td>
+<td>1-27 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>6h23min</td>
+<td>7h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>20min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-12"><a href="#感受：-12" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天还行，不是很困，记忆中没有特别想睡的时候。</p>
+<p><strong>变换项目以及原因</strong>：昨天入睡时间延迟了一点，因为刷完B站感觉睡不着，又看了一下书，然后又听了一下音乐才睡着的。</p>
+<p>因此有一下两个结论：</p>
+<ol>
+<li>睡前刷B站容易引起兴奋</li>
+<li>舒缓的音乐能够让我入睡</li>
+</ol>
+<p>明天计划在明天。</p>
+<h1 id="1月28日"><a href="#1月28日" class="headerlink" title="1月28日"></a>1月28日</h1><h3 id="睡眠时间记录：-13"><a href="#睡眠时间记录：-13" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-28 02:00</td>
+<td>1-27 22:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-28 02:45</td>
+<td>1-28 22:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-28 11:27</td>
+<td>1-28 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>8h41min</td>
+<td>9h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>30min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-13"><a href="#感受：-13" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天写睡眠总结的时候，好困😪。但是晚上又看视频到凌晨。</p>
+<p><strong>变换项目以及原因</strong>：昨天晚上没有及时入睡，一个原因是因为晚上在看B站，详细分析见B站戒断记录；另一个原因是中午睡了午觉。</p>
+<p>今天原本是整个项目总结的日子，但是因为迟迟没有达到目标，所以项目一直在拖拖拖。</p>
+<p><strong>所以写一个短暂地总结</strong>：比较好的是，大致知道了一些我自己的数据，比如睡饱饱时间、作息时间；并且还知道了补觉、调整作息的大致机制。但是作息迟迟没有调整到我满意的状态，最根本的原因是执行力并不是很好，可能缺失一个明确的目标，体现在作息上就是晚上不能在规定的时间入睡，白天不能起床。</p>
+<p>今明天作息如下</p>
+<h1 id="1月29日"><a href="#1月29日" class="headerlink" title="1月29日"></a>1月29日</h1><h3 id="睡眠时间记录：-14"><a href="#睡眠时间记录：-14" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-29 02:43</td>
+<td>1-29 23:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-29 02:43</td>
+<td>1-29 00:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-29 11:46</td>
+<td>1-29 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>9h3min</td>
+<td>7h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>15min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-14"><a href="#感受：-14" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不困</p>
+<p><strong>变换项目以及原因</strong>：昨天首先因为选课熬夜到一点，然后又看了1h的bilibili，同时今天早上听到了闹钟，但是没有起床。</p>
+<p>所以现在的制约就是，白天没有足够的动力起床，晚上总是会沉浸在其他事情里，然后推迟上床时间。</p>
+<h1 id="1月30日"><a href="#1月30日" class="headerlink" title="1月30日"></a>1月30日</h1><h3 id="睡眠时间记录：-15"><a href="#睡眠时间记录：-15" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-30 01:30</td>
+<td>1-29 23:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-30 01:57</td>
+<td>1-30 00:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-30 11:28</td>
+<td>1-30 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>9h31min</td>
+<td>7h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>25min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-15"><a href="#感受：-15" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不困</p>
+<p><strong>变换项目以及原因</strong>：昨天入睡时间比较晚，因为前天睡眠时间长达9h，实在睡不着，所以又看了一下书，然后是听了一下音乐入眠。</p>
+<p>现在作息似乎保持稳定了，再次验证9h左右是我的睡饱饱时间。</p>
+<p>所以回到学校想要7点起床并且不困，真的得10点睡觉。</p>
+<p>还剩7天加油吧，早晨加油，******！</p>
+<p>明天7点起床！</p>
+<h1 id="1月31日"><a href="#1月31日" class="headerlink" title="1月31日"></a>1月31日</h1><h3 id="睡眠时间记录：-16"><a href="#睡眠时间记录：-16" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>1-31 2:14</td>
+<td>1-31 01:00</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>1-31 2:53</td>
+<td>1-31 02:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>1-31 11:30</td>
+<td>1-31 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>8h37min</td>
+<td>5h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>35min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-16"><a href="#感受：-16" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不困</p>
+<p><strong>变换项目以及原因</strong>：昨天晚上连看两集怪物物语，就到2点14分了，然后感觉没多久就睡着啦，似乎没这么晚睡着。但是今天早上根本没有听到铃声，很恐怖，那时候是在浅睡阶段。10点醒来了一下，11点半自然醒。</p>
+<p>现在应该已经形成了一个稳定的作息，我已经会自然醒了，回来奶奶家已经过去了26天，这带来了一个新的研究目标，最短稳定作息时间。</p>
+<p>还是那个问题，早上起不来，原因有下：</p>
+<ul>
+<li>起床时间缺乏目标，没有想起起床的目的</li>
+<li>闹钟不太行（有可能是压在枕头底下的原因</li>
+</ul>
+<p>解决方案：</p>
+<ul>
+<li>睡前默念明天起床后要干什么，为什么这么干</li>
+<li>检查手机有没有放在枕头下</li>
+</ul>
+<h1 id="2月1日"><a href="#2月1日" class="headerlink" title="2月1日"></a>2月1日</h1><h3 id="睡眠时间记录：-17"><a href="#睡眠时间记录：-17" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-1 02:47</td>
+<td>昨天忘记计划</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-1 03:09</td>
+<td>昨天忘记计划</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-1 12:00</td>
+<td>2-1 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>8h51min</td>
+<td>昨天忘记计划</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>30min</td>
+<td>昨天忘记计划</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-17"><a href="#感受：-17" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不困</p>
+<p><strong>变换项目以及原因</strong>：昨天先是0点到1.半****，然后又看java开发手册到差不多2.半，然后就睡觉。问题就是晚上睡不着，总是想干点什么，不然感觉很亏。但是其实症结所在还是早起不能，今天早上又没有听到7点的闹钟，但是听到了9点的闹钟，所以可能7点的闹钟铃声有点太弱了。以及昨天并没有执行默念，这是滴答清单提醒不到位。</p>
+<h1 id="2月2日"><a href="#2月2日" class="headerlink" title="2月2日"></a>2月2日</h1><h3 id="睡眠时间记录：-18"><a href="#睡眠时间记录：-18" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-2 01:35</td>
+<td>2-2 00:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-2 02:04</td>
+<td>2-2 01:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-2 07:04</td>
+<td>2-2 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>5h</td>
+<td>6h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>30min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-18"><a href="#感受：-18" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不困，现在比较困（2023.2.02.10:51</p>
+<p><strong>变换项目以及原因</strong>：昨天晚睡了，因为用完了B站时间，今天成功早起了，可能的原因如下：</p>
+<ul>
+<li>起床的时候在像为什么要早起，早起能给我带来什么，虽然可能没有打鸡血的效果，但是一直在想东西，脑子就比较清醒，能够不继续睡。</li>
+</ul>
+<p>接下来的挑战就是，白天忍住不睡，然后晚上提前睡觉时间，加油加油，不要重现4天前的失败，毕竟早起是困难的，至少现在来说。</p>
+<h1 id="2月3日"><a href="#2月3日" class="headerlink" title="2月3日"></a>2月3日</h1><h3 id="睡眠时间记录：-19"><a href="#睡眠时间记录：-19" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+<th>午睡</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-3 02:49</td>
+<td>2-3 00:45</td>
+<td>2-2 13:30</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-3 03:08</td>
+<td>2-3 01:00</td>
+<td>2-2 13:54</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-3 12:24</td>
+<td>2-3 07:00</td>
+<td>2-2 15:19</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>9h16min</td>
+<td>6h</td>
+<td>1h25min</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>5min</td>
+<td>5min</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="感受：-19"><a href="#感受：-19" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天a困倦，说明5小时的睡眠时间还是不够。所以昨天中午睡了一个午觉，睡了1h25min，之后下午其实就不困了，甚至还能熬夜到凌晨3点。</p>
+<p><strong>变换项目以及原因</strong>：昨天晚上入睡时间甚至来到了3点，原因有二：</p>
+<ol>
+<li>白天睡了一个午觉，晚上就睡不着了</li>
+<li>怪奇物语太好看，el老是让我想起潘多拉，所以就一直看了2集</li>
+</ol>
+<p>总结来说，昨天过的比较混沌，life barely follow the schedule。没能把握住少数的早起机会。</p>
+<p>鉴于调整作息的困难，所以引入咖啡和褪黑素来帮助调整，明天早起后喝咖啡。</p>
+<p>明天计划如下</p>
+<h1 id="2月4日"><a href="#2月4日" class="headerlink" title="2月4日"></a>2月4日</h1><h3 id="睡眠时间记录：-20"><a href="#睡眠时间记录：-20" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>忘记了</td>
+<td>2-4 01:00</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-4 03:04</td>
+<td>2-4 02:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-4 12:00</td>
+<td>2-4 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>8h56min</td>
+<td>5h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>10min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-20"><a href="#感受：-20" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不困</p>
+<p><strong>变换项目以及原因</strong>：昨天放纵自己，晚上一直在刷youtube，看b站，一直到很晚（具体不记得了），然后才睡，甚至害怕伤身体，所以甚至主动把闹钟关掉了，我不知道我在干什么。</p>
+<p>所以今天，不带平板上床。</p>
+<h1 id="2月5日"><a href="#2月5日" class="headerlink" title="2月5日"></a>2月5日</h1><h3 id="睡眠时间记录：-21"><a href="#睡眠时间记录：-21" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-5 01:50</td>
+<td>2-5 01:00</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-5 02:30</td>
+<td>2-5 02:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-5 11:15</td>
+<td>2-5 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>8h45min</td>
+<td>5h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>15min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-21"><a href="#感受：-21" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不困</p>
+<p><strong>变换项目以及原因</strong>：今天虽然闹钟把我吵醒了，我也确确实实清醒了，但是没能起来，因为听到外面有声音，所以就不想出去碰面，但是现在一想，其实出去碰面也没什么。可能是我的社恐，内向的性格在作祟？</p>
+<p>what ever，明天以及后天是强制早起的两天，所以利用好这个机会，明天起床之后来一杯coffee，以及后天来一杯coffee。</p>
+<h1 id="2月6日"><a href="#2月6日" class="headerlink" title="2月6日"></a>2月6日</h1><h3 id="睡眠时间记录：-22"><a href="#睡眠时间记录：-22" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>- :</td>
+<td>2-5 23:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-6 02:23</td>
+<td>2-6 00:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-6 08:11</td>
+<td>2-6 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>5h39min</td>
+<td>5h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-22"><a href="#感受：-22" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天</p>
+<p><strong>变换项目以及原因</strong>：昨天</p>
+<h1 id="2月7日"><a href="#2月7日" class="headerlink" title="2月7日"></a>2月7日</h1><h3 id="睡眠时间记录：-23"><a href="#睡眠时间记录：-23" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>- :</td>
+<td>- :</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-7 01:15</td>
+<td>- :</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-7 07:10</td>
+<td>- :</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>5h42min</td>
+<td>9h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-23"><a href="#感受：-23" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不太困，虽然只睡了5h39min，还是没有睡午觉，一直玩到了晚上。</p>
+<p><strong>变换项目以及原因</strong>：昨天没有计划，因为在旅途中，很难坚持做到原来的计划。</p>
+<h1 id="2月8日"><a href="#2月8日" class="headerlink" title="2月8日"></a>2月8日</h1><h3 id="睡眠时间记录：-24"><a href="#睡眠时间记录：-24" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>忘记了</td>
+<td>2-7 22:00</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-9 03:52</td>
+<td>2-7 23:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-9 11:38</td>
+<td>2-8 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>7h44min</td>
+<td>8h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>忘记了</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-24"><a href="#感受：-24" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天在高铁上很困，一直断断续续地睡了三个小时，后来白天可能会好一点？然后晚上不知道是不是睡得着。然后又是3点睡的。</p>
+<p><strong>变换项目以及原因</strong>：忘记了</p>
+<h1 id="2月9日"><a href="#2月9日" class="headerlink" title="2月9日"></a>2月9日</h1><h3 id="睡眠时间记录：-25"><a href="#睡眠时间记录：-25" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-10 02:00</td>
+<td>- :</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-10 02:06</td>
+<td>- :</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-10 0831:</td>
+<td>- :</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>6h25min</td>
+<td>9h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-25"><a href="#感受：-25" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不困</p>
+<p><strong>变换项目以及原因</strong>：昨天没有计划，但是吃了褪黑素，确实能让人变困，到2点的时候已经困得不行了。</p>
+<h1 id="2月10日"><a href="#2月10日" class="headerlink" title="2月10日"></a>2月10日</h1><h3 id="睡眠时间记录：-26"><a href="#睡眠时间记录：-26" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-10 01:00</td>
+<td>忘记计划了</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-10 01:17</td>
+<td>忘记计划了</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-10 08:48</td>
+<td>2-10 08:30</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>7h31min</td>
+<td>忘记计划了</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>20min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-26"><a href="#感受：-26" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天白天起床之后喝了一管咖啡，但是还是困。下午2点到4点尤其困，但是那段时间是在地铁上，所以就挺过去了。同时晚上因为吃了一片褪黑素，所以也很困。但是因为当时比较horny，所以拖到1点，大概1点左右睡着的。</p>
+<p><strong>变换项目以及原因</strong>：今天起床时间晚了一点，因为新的铃声确实顶，百分百叫人起床，但是也是有点烦，所以就起晚了一点。</p>
+<p>同时有一个新发现，关于褪黑素的作用效果，是更时间有关系的。</p>
+<p>今天就留意一下时间，以获得一个最好的摄入后入睡的方式。</p>
+<h1 id="2月11日"><a href="#2月11日" class="headerlink" title="2月11日"></a>2月11日</h1><h3 id="睡眠时间记录：-27"><a href="#睡眠时间记录：-27" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-11 01:20</td>
+<td>忘记了</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-11 01:53</td>
+<td>忘记了</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-11 07:32</td>
+<td>忘记了</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>5h39min</td>
+<td>忘记了</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>5min</td>
+<td>忘记了</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-27"><a href="#感受：-27" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天还行，并不特别困。</p>
+<p><strong>变换项目以及原因</strong>：昨天入睡晚了，今天起床特别早，7.半。但是6小时不到的睡眠时间让人绝望，现在（11日中午），感觉好困，干事情提不起精神，特别容易出错，也容易拖沓。（这种情况一直持续到下午4点，晚上就没有了）</p>
+<p>至于褪黑素的效果，昨天其实褪黑素并不作用明显。</p>
+<h1 id="2月12日"><a href="#2月12日" class="headerlink" title="2月12日"></a>2月12日</h1><h3 id="睡眠时间记录：-28"><a href="#睡眠时间记录：-28" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-12 01:00</td>
+<td>2-12 22:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-12 01:19</td>
+<td>2-12 23:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-12 09:01</td>
+<td>2-13 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>7h42min</td>
+<td>9h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>1h30min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-28"><a href="#感受：-28" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天a困，睡6h不到真的不行。</p>
+<p><strong>变换项目以及原因</strong>：昨天并没有如期上床睡觉，因为又是在用电脑，所以晚上有个合理计划还是很重要的，不然还是会晚睡。以及1点睡真的7点起会非常困。</p>
+<p>褪黑素的效果非常不错，晚上困得不行了，上床感觉耗尽了力气。</p>
+<p>明天要上课了，7点早起！</p>
+<h1 id="2月13日"><a href="#2月13日" class="headerlink" title="2月13日"></a>2月13日</h1><h3 id="睡眠时间记录：-29"><a href="#睡眠时间记录：-29" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-13 00:05</td>
+<td>2-13 22:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-·3 00:10</td>
+<td>2-13 23:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-3 07:00</td>
+<td>2-13 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>6h50min</td>
+<td>8h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>5min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-29"><a href="#感受：-29" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天起床的时候赖床了1h，确实很困。今天起床来也是有点困的感觉。</p>
+<p><strong>变换项目以及原因</strong>：昨天晚睡了差不多1小时，因为我看了一集怪奇物语。但是在23点左右吃的褪黑素，之后可能10分钟，困意达到了巅峰，但是其实之后看剧时间中，一直保持着某种打哈欠的状态，所以也是困的，然后5min就睡着了。</p>
+<h1 id="2月14日"><a href="#2月14日" class="headerlink" title="2月14日"></a>2月14日</h1><h3 id="睡眠时间记录：-30"><a href="#睡眠时间记录：-30" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-13 23:36</td>
+<td>2-13 22:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-14 00:00</td>
+<td>2-14 23:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-14 07:24</td>
+<td>2-14 07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>7h23min</td>
+<td>9h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>2min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-30"><a href="#感受：-30" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天中午没睡觉，上午上课的时候也是有一点困倦，同时下午有一点困，三四节课的时候，上数字电路课想要睡觉，但是还好课程精彩，没有睡觉。</p>
+<p>说明昨天不到7小时的时间还是有点不太够。</p>
+<p><strong>变换项目以及原因</strong>：昨天睡得比较晚，但是在没有吃褪黑素的情况下昏昏欲睡，还是比较理想，起码在进步中。以及今天在曾桑的影响下推迟了起床时间，这样带来了一点睡过的危险。</p>
+<p>至于明天，同样继续睡饱饱作息。</p>
+<h1 id="2月16日"><a href="#2月16日" class="headerlink" title="2月16日"></a>2月16日</h1><h3 id="睡眠时间记录：-31"><a href="#睡眠时间记录：-31" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-15 23:20</td>
+<td>22:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-15 23:27</td>
+<td>23:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-16 07:04</td>
+<td>07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>7h36min</td>
+<td>8h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>8min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-31"><a href="#感受：-31" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天其实还是困的，在早上上近代日本史的时候a想睡觉，但是还好早八不是很困。因为中午赴了一个鸿门宴，所以中午没有睡觉，但是下午没什么感觉。只是晚上的时候感觉还是比较疲倦，是那种不上床还能坚持，上床就能睡着的疲倦。这样看了不到8小时的睡眠时间还是不太够。</p>
+<p><strong>变换项目以及原因</strong>：昨天因为睡前看了一篇讲full stack的文章和一点房思琪的初恋乐园，所以即使23点上床，是看了一会太困了才睡的。</p>
+<p>让我印象很深的是，耳塞是真的nb，戴上后就真的基本上听不到室友说话，配合黑色床帘，无敌。</p>
+<p>还有一点，是关于太阳闹钟，我使用了一个50w的飞利浦灯泡配合小米智能插座实现了一个用光照醒我的闹钟，已经使用了2天，起码在我现在的作息，效果非常不错。等在用久一点，大概一个月之后，看看稳定性怎么样。</p>
+<h2 id="太阳闹钟"><a href="#太阳闹钟" class="headerlink" title="太阳闹钟"></a>太阳闹钟</h2><p>为了隔绝舍友的影响，达到入眠自由，我用可以隔绝大部分光线的摄影布来当床帘，配合上耳塞能够很好的实现入眠自由。同时为了铃声不打扰舍友，就使用了一个50w的灯泡叫我起床。</p>
+<p><img src="/20230220_083840.jpg" alt="黑色的床帘"></p>
+<p><img src="/20230220_083904_HDR.jpg" alt="没有闹钟的样子"></p>
+<p><img src="/20230220_083850_HDR.jpg" alt="闹钟亮起来的样子"></p>
+<p><img src="/20230220_083814.jpg" alt="小米智能插座"></p>
+<p>配合上小米智能插座，能够固定在某个时间段亮起：）</p>
+<h1 id="2月17日"><a href="#2月17日" class="headerlink" title="2月17日"></a>2月17日</h1><h3 id="睡眠时间记录：-32"><a href="#睡眠时间记录：-32" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-17 00:40</td>
+<td>22:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-17 01:05</td>
+<td>23:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-17 08:17</td>
+<td>07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>7h12min</td>
+<td>8h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>6min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-32"><a href="#感受：-32" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不是很困。</p>
+<p><strong>变换项目以及原因</strong>：昨天晚上因为痴迷焊线，上床就晚，但是后面因为灵感突发，想到了最后一题怎么解，所以带平板上去写，之后沉迷淘宝直播半小时，0点40分才入睡，这带来的警示——不能带平板上床、戴耳塞来应对室友说话。</p>
+<p>晚睡自然就晚起，所以今天8点起床。</p>
+<h1 id="2月18日"><a href="#2月18日" class="headerlink" title="2月18日"></a>2月18日</h1><h3 id="睡眠时间记录：-33"><a href="#睡眠时间记录：-33" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-17 23:40</td>
+<td>22:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-18 00:16</td>
+<td>23:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-18 08:00</td>
+<td>07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>7h44min</td>
+<td>8h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>21min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-33"><a href="#感受：-33" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天中午睡了午觉，睡过了头；今天早上同样没能立即起床，说明光闹钟并不是百分百能够叫醒我的。</p>
+<p><strong>变换项目以及原因</strong>：因为昨天是friday night，所以放纵了一下。</p>
+<h1 id="2月19日"><a href="#2月19日" class="headerlink" title="2月19日"></a>2月19日</h1><h3 id="睡眠时间记录：-34"><a href="#睡眠时间记录：-34" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-19 02:37</td>
+<td>22:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-19 02:37</td>
+<td>23:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-19 10:16</td>
+<td>07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>7h39min</td>
+<td>8h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>10min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-34"><a href="#感受：-34" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>：昨天不困，中午还睡了大大觉。</p>
+<p><strong>变换项目以及原因</strong>：昨天因为中午的午觉睡了大概4小时，所以入睡时间推迟到了2点，起床时间也推迟到早上10点。</p>
+<p>有两点比较有趣：</p>
+<ol>
+<li>我的作息以及改到了23点到0点入睡，早上7点到8点起床</li>
+</ol>
+<p>所以回顾这段时间，仅仅用了2周不到的时间，就把作息调整到现在十分健康。</p>
+<p>以及太阳闹钟今天依旧闹醒我了。</p>
+<h1 id="2月20日"><a href="#2月20日" class="headerlink" title="2月20日"></a>2月20日</h1><h3 id="睡眠时间记录：-35"><a href="#睡眠时间记录：-35" class="headerlink" title="睡眠时间记录："></a>睡眠时间记录：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实际时间</th>
+<th>计划时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上床时间：</td>
+<td>2-19 23:40</td>
+<td>22:45</td>
+</tr>
+<tr>
+<td>入睡时间：</td>
+<td>2-20 00:21</td>
+<td>23:00</td>
+</tr>
+<tr>
+<td>起床时间：</td>
+<td>2-20 07:10</td>
+<td>07:00</td>
+</tr>
+<tr>
+<td>睡眠长度：</td>
+<td>6h49min</td>
+<td>8h</td>
+</tr>
+<tr>
+<td>赖床时间：</td>
+<td>7min</td>
+<td>5min</td>
+</tr>
+</tbody></table>
+<h3 id="感受：-35"><a href="#感受：-35" class="headerlink" title="感受："></a>感受：</h3><p><strong>困倦程度</strong>:昨天并不感觉很困</p>
+<p><strong>变换项目以及原因</strong>：昨天晚上没能提前很久入睡，但是还是成功做到了隔绝室友的影响，然后自己入睡。以及在床上看waitbutwhy的博客是催人入睡好阅读材料。</p>
+<p>今天起床的时候脸是埋在枕头里的，这时候太阳闹钟就不是很能奏效，但是配合上计时器的振动，我确确实实的醒来了。</p>
+<p>说明太阳闹钟不是百分百好使，在睡眠时间不够以及脸埋在枕头里的情况都很可能失效，并且过去几天已经失效了很多次。</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>过去的30多天，几乎每天都是风雨无阻地记录着前一天的睡眠相关的情况，我对这件事无疑产生了感情。但是到今天，回看当初想要探讨的目标已经差不多知道。我也来到了一个相对之前非常健康的作息。所以，是时候结束了。我将把这些内容整理整理，删掉一些敏感的信息，补充一些图片，放到博客上，就像当初设想的那样。</p>
+<p>希望这能激励你，每天复盘一下前一天，推荐各位也这么干一干。</p>
+<h1 id="结论："><a href="#结论：" class="headerlink" title="结论："></a><strong>结论</strong>：</h1><ul>
+<li>间隔5分钟的闹钟确实有效</li>
+<li>****可能会延长睡眠时间</li>
+<li>只睡5小时，我白天一定会困</li>
+<li>作息具有自稳补偿的性质</li>
+<li>每天能提前多久睡觉和延迟多久睡觉（熬夜多久）与之前的睡眠时间有关</li>
+<li>我的睡饱饱时间是9h左右<ul>
+<li>8小时不到会困</li>
+</ul>
+</li>
+<li>最短稳定作息时间：13天（23年春季回学校创下）<del>26天（回奶奶家创下）</del></li>
+<li>吃完褪黑素15min内会达到睡意的高潮</li>
+<li>太阳闹钟不是一种完美的闹钟，但是作为辅助来说是很好的。</li>
+</ul>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E7%9D%A1%E7%9C%A0/">睡眠</a>
+        </span>
+      
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+        <a href="/2024/11/07/embedded-joke-01/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          嵌入式笑话一则
+        </a>
+      
+    </div>
+    <div>
+      
+        <a href="/2023/01/01/hello-world/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          Hello World
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>

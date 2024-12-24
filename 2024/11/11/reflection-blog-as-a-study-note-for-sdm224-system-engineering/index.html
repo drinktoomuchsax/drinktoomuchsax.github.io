@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta name="author" content="drinktoomuchsax">
+
+
+  <meta name="subtitle" content="Nice to meet u">
+
+
+
+
+<title>《INTRODUCTION TO SYSTEMS ENGINEERING》读后感 | drinktoomuchsax&#39;s blog</title>
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+
+    $("#toggle-dark").click((event) => {
+      const isAppearanceTransition = document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (!isAppearanceTransition) {
+        toggleDark()
+        return
+      }
+      const x = event.clientX
+      const y = event.clientY
+      const endRadius = Math.hypot(
+        Math.max(x, innerWidth - x),
+        Math.max(y, innerHeight - y),
+      )
+      const transition = document.startViewTransition(async () => {
+        toggleDark()
+      })
+
+      transition.ready
+        .then(() => {
+          const isDark = document.documentElement.classList.contains("dark")
+          const clipPath = [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ]
+          document.documentElement.animate(
+            {
+              clipPath: isDark
+                ? [...clipPath].reverse()
+                : clipPath,
+            },
+            {
+              duration: 400,
+              easing: 'ease-out',
+              pseudoElement: isDark
+                ? '::view-transition-old(root)'
+                : '::view-transition-new(root)',
+            },
+          )
+        })
+    });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/logo.svg" alt="drinktoomuchsax's blog" />
+          drinktoomuchsax&#39;s blog
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        《INTRODUCTION TO SYSTEMS ENGINEERING》读后感
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/xbmlz">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Github" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        《INTRODUCTION TO SYSTEMS ENGINEERING》读后感
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2024-12-23</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>23 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>5.9k words</span>
+          </span>
+          
+            <span class="text-gray-400">·</span>
+            <span class="flex items-center gap-1">
+              <iconify-icon width="16" icon="icon-park-outline:box" class="mr-2"></iconify-icon>
+              <a class="article-category-link" href="/categories/Reflection-Paper/">Reflection Paper</a>
+            </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h1 id="即SDM224系统工程基础第10周Study-Note"><a href="#即SDM224系统工程基础第10周Study-Note" class="headerlink" title="即SDM224系统工程基础第10周Study Note"></a>即SDM224系统工程基础第10周Study Note</h1><ul>
+<li><a href="#%E5%8D%B3sdm224%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80%E7%AC%AC10%E5%91%A8study-note">即SDM224系统工程基础第10周Study Note</a><ul>
+<li><a href="#11-%E4%BB%80%E4%B9%88%E6%98%AF%E7%B3%BB%E7%BB%9F">1.1 什么是系统？</a></li>
+<li><a href="#12-%E7%B3%BB%E7%BB%9F%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">1.2 系统生命周期</a></li>
+<li><a href="#13-%E8%8E%B7%E5%8F%96%E4%B8%8E%E4%BD%BF%E7%94%A8%E9%98%B6%E6%AE%B5">1.3 获取与使用阶段</a></li>
+<li><a href="#14-%E5%BC%80%E5%8F%91%E6%96%B9%E6%B3%95">1.4 开发方法</a></li>
+<li><a href="#15-%E4%BB%80%E4%B9%88%E6%98%AF%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8B">1.5 什么是系统工程？</a></li>
+<li><a href="#16-%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8B%E7%9A%84%E7%9B%B8%E5%85%B3%E6%80%A7">1.6 系统工程的相关性</a></li>
+<li><a href="#17-%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8B%E7%9A%84%E4%BC%98%E7%82%B9">1.7 系统工程的优点</a></li>
+<li><a href="#%E8%AF%BE%E7%A8%8B%E5%8F%8D%E9%A6%88%E5%A6%82%E4%BD%95%E7%9C%9F%E6%AD%A3%E7%90%86%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8B">课程反馈：如何真正理解系统工程</a></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>当我问自己，我真的知道了解什么是系统工程吗？答案是我不知道；<br>然后我又问自己，这个东西很重要吗？我说有可能。<br>所以我决定写下这篇博客。</p>
+</blockquote>
+<p>周一晚上的思政课的时间，读了一下课程推荐教材<a target="_blank" rel="noopener" href="https://www.argospress.com/books/introduction-to-systems-engineering">《INTRODUCTION TO SYSTEMS ENGINEERING》</a>。</p>
+<p>读完，我发现，系统工程其实蛮好的。</p>
+<p>这篇博客主要是第一章的读后感。</p>
+<h2 id="1-1-什么是系统？"><a href="#1-1-什么是系统？" class="headerlink" title="1.1 什么是系统？"></a>1.1 什么是系统？</h2><p>书中的系统定义参考了ISO&#x2F;IEC 15288，</p>
+<blockquote>
+<p>a combination of interacting elements organized to achieve one or more stated purposes</p>
+</blockquote>
+<blockquote>
+<p>一组相互作用的元素，组织在一起以实现一个或多个明确的目的</p>
+</blockquote>
+<p>不像信号与系统里的系统定义，这里的系统少了一些数学的性质，变得普适和易于理解。</p>
+<p>第一章还有一个有趣的概念叫“Capability System”，作者将系统和其支持其运行的能力联系在一起，将概念扩大到了更大的范围，称之为“Capability System”，这个概念引导人在看待一个系统的时候，不把目光局限在系统本身，而是能够看到更广的范围。</p>
+<p>比如以一个上帝视角来观察Freedorm的运作，从研发到开售到售后，一系列小的事情在脑中闪过，给人一种掌控全局的安全感。</p>
+<ul>
+<li><em>注：Freedorm是南科大宿舍门改装套件，能够提供蓝牙感应开门，远程开门等功能，详情请见<a target="_blank" rel="noopener" href="https://github.com/Freedorm/Freedorm_open_source">我们的开源页面</a></em></li>
+</ul>
+<p>1.1.7.2 Physical Hierarchy提出了一种四层的系统结构，分别是：System, Subsystem, Assemblies, Component。这种结构在工程中是非常常见的，应用在Freedorm上也非常合适。</p>
+<p>对于更大更复杂的项目，还会多一个System of Systems，每一个小的System都有自己的System Engineering，包括生命周期，需求分析，设计，验证优化等等。</p>
+<h2 id="1-2-系统生命周期"><a href="#1-2-系统生命周期" class="headerlink" title="1.2 系统生命周期"></a>1.2 系统生命周期</h2><p>这一页引入了课上经常听到的四个生命周期，这几个阶段可以总结为：</p>
+<ol>
+<li><p><strong>预获取阶段（Pre-acquisition Phase）</strong>：</p>
+<ul>
+<li>在这一阶段，系统生命周期开始于业务规划过程中产生的系统构想。对可行选项的早期考虑会确认系统的初步业务需求，并通过一个业务案例来详细说明支出组织资源以获取该系统的合理性。</li>
+<li>在某些情况下，预获取阶段可能确定继续获取系统不可行或不具成本效益（如技术限制或资金不足）。</li>
+<li>因此，预获取阶段主要通过研发资金确保只有可行且具有成本效益的项目会继续进入获取阶段。</li>
+</ul>
+</li>
+<li><p><strong>获取阶段（Acquisition Phase）</strong>：</p>
+<ul>
+<li>获取阶段基于系统的业务需求，旨在将系统引入组织并投入使用。</li>
+<li>通常包括根据业务需求、利益相关者需求和系统需求来定义系统，随后与承包商合作开发或交付该系统。</li>
+</ul>
+</li>
+<li><p><strong>使用阶段（Utilization Phase）</strong>：</p>
+<ul>
+<li>系统在使用阶段持续在组织中服役，直到不再满足业务需求，或无法再履行组织要求的功能，或不具备继续服务的成本效益。</li>
+<li>在此期间，系统可能经历多次修改和升级，以解决性能不足、满足不断变化的操作要求、适应外部环境，或提高当前性能和可靠性。</li>
+</ul>
+</li>
+<li><p><strong>退役阶段（Retirement Phase）</strong>：</p>
+<ul>
+<li>经过操作使用和系统支持后，系统最终逐步退役，生命周期以退役阶段结束。</li>
+<li>如果组织中对该系统能力的需求仍然存在，那么一个系统生命周期的结束往往意味着另一个系统生命周期的开始，整个过程重新启动。</li>
+</ul>
+</li>
+</ol>
+<p>由于作者R. Ian Faulconbridge从事澳大利亚的军工开发，这些术语特别适用于与政府合作的项目。</p>
+<p>尽管这四个阶段在消费产品开发中也适用，但不完全贴切。因此，在Freedorm的开发中，我们采用了以下的生命周期模型：</p>
+<p><img src="/2024/11/11/reflection-blog-as-a-study-note-for-sdm224-system-engineering/freedorm_milestone.png" alt="Freedorm Milestone"></p>
+<p>链接一下其他知识，设计思维里Double Diamond就是用在预获取和获取阶段来获取用户需求和和确定产品解决方案的一种工具。</p>
+<h2 id="1-3-获取与使用阶段"><a href="#1-3-获取与使用阶段" class="headerlink" title="1.3 获取与使用阶段"></a>1.3 获取与使用阶段</h2><blockquote>
+<p> If you can’t explain it simply, you don’t understand it well enough. —— Albert Einstein</p>
+</blockquote>
+<p>这一章详细介绍了获取阶段的一些概念，包括以下四个主要活动，每个活动包括关键的设计步骤和评审节点如下：</p>
+<ol>
+<li><p><strong>概念设计（Conceptual Design）</strong>：</p>
+<ul>
+<li>概念设计旨在系统层面生成一套明确的需求，以逻辑方式表述。尽管清晰定义系统需求是合理且必要的起点，但通常执行得不充分，常导致后续开发过程中的问题。概念设计过程通过正式流程来明确业务需求与需求（BNR：Business Needs and Requirements），由业务管理层确认，再由业务操作层的利益相关者细化为利益相关者需求和需求（SNR：Stakeholder Needs and Requirements），最终由需求工程师转化为系统需求规范（SyRS：System Requirements Specification）。</li>
+<li>在大型系统中，可能会为每个关键组成元素（如主要物资系统、人员、支持、培训和设施等）分别制定SyRS。</li>
+</ul>
+</li>
+<li><p><strong>初步设计（Preliminary Design）</strong>：</p>
+<ul>
+<li>初步设计的目的是将功能基线（FBL：Functional Baseline）转化为系统配置或架构的上层物理定义。这个阶段将逻辑设计转化为物理设计，使焦点从问题领域转移到解决方案领域。初步设计的结果是生成一个子系统级的分配基线（ABL：Allocated Baseline），将FBL中的逻辑分组重新细化并分配到子系统级的物理分组（称为配置项，CI：Configuration Item）。</li>
+<li>初步设计评审（PDR：Preliminary Design Review）用于评估ABL的技术适用性，确保该设计满足技术要求并识别并确认各个CI的接口和兼容性。</li>
+</ul>
+</li>
+<li><p><strong>详细设计与开发（Detailed Design and Development）</strong>：</p>
+<ul>
+<li>初步设计中的ABL用作详细设计和开发的基础，以完成各子系统、组件的开发。在此过程中可能会进行原型设计，并通过测试和评估确认系统设计。详细设计与开发的最终产物是产品基线（PBL：Product Baseline），此时系统被定义为由多个子系统、组件及其制造和建造的所需材料和工艺组成。</li>
+<li>产品基线在关键设计评审（CDR：Critical Design Review）中建立，CDR是最终设计评审节点，决定设计是否正式被接受，标志着生产&#x2F;建造活动的开始。CDR评估详细设计，判断生产&#x2F;建造的准备情况，并确保所有内部和外部接口的兼容性。</li>
+</ul>
+</li>
+<li><p><strong>建造&#x2F;生产（Construction and&#x2F;or Production）</strong>：</p>
+<ul>
+<li>获取阶段的最终活动是建造或生产，系统组件按照PBL中的详细设计规范被生产，系统最终以其完整形式建成。会进行正式测试与评估活动（验收测试，AT&amp;E：Acceptance Test and Evaluation），以确保最终系统配置符合SyRS中的需求。</li>
+<li>建造&#x2F;生产活动以及获取阶段以正式鉴定评审（FQR：Formal Qualification Review）结束，FQR是客户根据AT&amp;E结果正式接受系统的基础。</li>
+</ul>
+</li>
+</ol>
+<p>引入一堆名词和概念来解释一堆东西是对读者对不尊重，因此为了表明我对读者对尊重和对这部分内容的理解，我将上面的一坨提出我的解释：</p>
+<ol>
+<li><p><strong>概念设计</strong>：</p>
+<ul>
+<li>这一阶段的目标是以清晰的方式定义系统需求。虽然明确系统需求是开发的关键第一步，但许多项目在这一点上会遇到问题，因为需求的描述可能不够准确。概念设计的过程通过正式步骤来明确业务需求，得到管理层的确认，并在此基础上细化为详细的系统需求。</li>
+</ul>
+</li>
+<li><p><strong>初步设计</strong>：</p>
+<ul>
+<li>初步设计阶段把概念设计中的系统结构转化为更具体的设计框架，重点从“需要什么”转移到“如何实现”。初步设计会更详细地定义子系统，确保不同部分能兼容和协同工作。这个阶段还会对设计进行评估，以确保技术上可行，并且符合需求。</li>
+</ul>
+</li>
+<li><p><strong>详细设计与开发</strong>：</p>
+<ul>
+<li>这一阶段在初步设计的基础上，进一步细化各个部分的具体设计和开发。可能会制作原型来验证设计是否满足需求，并进行测试。最终成果是详细的系统设计，这时候的设计细节已经可以支持实际的生产或建造工作。</li>
+</ul>
+</li>
+<li><p><strong>建造和生产</strong>：</p>
+<ul>
+<li>在详细设计完成后，系统进入实际的建造或生产阶段。各部分根据设计规格被制造出来，系统逐步被组装成完整的形式。最后，通过正式测试确保系统符合设计需求，经过确认后，客户正式验收系统。</li>
+</ul>
+</li>
+</ol>
+<h2 id="1-4-开发方法"><a href="#1-4-开发方法" class="headerlink" title="1.4 开发方法"></a>1.4 开发方法</h2><p>书中还介绍了几种常见的开发方法，以下是ChatGPT-4o的解释：</p>
+<ol>
+<li><p><strong>瀑布式开发方法</strong> (Waterfall Approach)：</p>
+<ul>
+<li>瀑布模型是一种线性、顺序式的开发方式，各个阶段如需求分析、设计、实现、测试等按顺序依次完成。每一阶段必须完全完成，才能进入下一个阶段。瀑布模型逻辑清晰、便于管理，但缺乏灵活性。如果在后期发现需求变更，回溯和调整的代价较高。</li>
+</ul>
+</li>
+<li><p><strong>增量式开发方法</strong> (Incremental Approach)：</p>
+<ul>
+<li>增量开发将系统分为多个小部分，逐步完成。每个部分的开发和测试都作为一个小“增量”完成，然后将增量整合形成完整的系统。这种方法可以逐步向用户交付功能，便于反馈和改进，也能更快适应需求变化。</li>
+</ul>
+</li>
+<li><p><strong>螺旋式开发方法</strong> (Spiral Approach)：</p>
+<ul>
+<li>螺旋模型结合了瀑布和增量开发的优点，并强调风险管理。每次迭代都包含规划、风险评估、开发、验证等活动，形成一个螺旋式上升的开发过程。这种方法特别适用于风险较高或需求不明确的项目，能在每个迭代中不断优化和改进。</li>
+</ul>
+</li>
+<li><p><strong>演进式开发方法</strong> (Evolutionary Approach)：</p>
+<ul>
+<li>演进式开发关注系统的不断改进和迭代。初始版本并不追求完美，而是快速推出一个基本版本，然后逐步完善。这种方法适合那些需求随时间推移不断变化的项目，能够更好地响应新需求和环境的变化。</li>
+</ul>
+</li>
+</ol>
+<p>不同方法各有优劣，选择合适的方法取决于项目的需求、时间、预算、风险等因素。</p>
+<h2 id="1-5-什么是系统工程？"><a href="#1-5-什么是系统工程？" class="headerlink" title="1.5 什么是系统工程？"></a>1.5 什么是系统工程？</h2><p>原文第5章写得很好，我就不班门弄斧了，这里放上原文 (不放中文，因为ai翻译感觉不太对)：</p>
+<details>
+<summary>展开查看原文</summary>
+
+<blockquote>
+<h2 id="1-5-WHAT-IS-SYSTEMS-ENGINEERING"><a href="#1-5-WHAT-IS-SYSTEMS-ENGINEERING" class="headerlink" title="1.5 WHAT IS SYSTEMS ENGINEERING?"></a>1.5 WHAT IS SYSTEMS ENGINEERING?</h2><p>There is a wide range of definitions of systems engineering, each of which is subtly different because it tends to reflect the particular focus of its source. Although each of these definitions has a slightly different focus, a number of common themes are evident and are described in the following sections.</p>
+<h3 id="1-5-1-Top-down-Approach"><a href="#1-5-1-Top-down-Approach" class="headerlink" title="1.5.1 Top-down Approach"></a>1.5.1 Top-down Approach</h3><p>Traditional engineering design methods are based on a bottom-up approach in which known components are combined into assemblies and then into the subsystems from which the system is then constructed. The system is then tested for the desired properties and the design is modified in an iterative manner until the system meets the desired criteria. This approach is valid and extremely useful for relatively straightforward problems that are well defined. Unfortunately, complicated problems cannot be solved using the bottom-up approach.</p>
+<p>Systems engineering begins by addressing the system as a whole, which facilitates an understanding of the system, its environment, and its interfaces. Once system-level requirements are understood, the system is then broken down into subsystems and the subsystems further broken down into assemblies, and then into components until a complete understanding is achieved of the system from top to bottom. This top-down approach is a very important element of managing the development of complicated systems. By viewing the system as a whole initially and then progressively breaking the system into smaller elements, the interaction between the components can be understood more thoroughly, which assists in identifying and designing the necessary interfaces between components (internal interfaces) and between this and other systems (external interfaces).</p>
+<p>It must be recognized, however, that while design is conducted top-down, the system is implemented using a bottom-up approach for a simple four-tier system. That is, one of the aims of systems engineering is to provide a rigorous, reproducible process by which the complex system can be broken down into a series of simple components that can then be designed and built using the traditional bottom-up engineering approach. Importantly, therefore, the second principal facet of systems engineering is to provide a process by which the components, assemblies, and subsystems can be integrated to achieve the desired system purpose.</p>
+<h3 id="1-5-2-Requirements-Engineering"><a href="#1-5-2-Requirements-Engineering" class="headerlink" title="1.5.2 Requirements Engineering"></a>1.5.2 Requirements Engineering</h3><p>The development of a complete and accurate definition of system requirements is fundamental to project success and is a primary focus of the early systems engineering effort (recognising, of course, that a complete description is not always possible). The life cycle of a system begins with business needs, which are translated into a large number of statements of requirement that form the basis for the logical design and subsequently elaborated further to form the physical architecture.</p>
+<p>These transitions must be managed by a rigorous process, called requirements engineering, which is aimed at ensuring that all relevant requirements are included (and all irrelevant requirements excluded). The establishment of correct requirements is fundamental to the success of the subsequent design activities. Poor requirements cannot be rectified by good design, so it invariably follows that rigorous development of requirements is essential for the acquisition to be successful.</p>
+<p>Chapter 2 provides more detail on the body of knowledge of requirements engineering.</p>
+<h3 id="1-5-3-Focus-on-Life-Cycle"><a href="#1-5-3-Focus-on-Life-Cycle" class="headerlink" title="1.5.3 Focus on Life Cycle"></a>1.5.3 Focus on Life Cycle</h3><p>Systems engineering is focused on the entire system life cycle and takes this life cycle into consideration during decision-making processes. In the past, it has been too common to consider design options only in light of issues associated with the Acquisition Phase and to pay little attention to through-life support aspects.</p>
+<p>It is proper for project managers and their teams to focus on the Acquisition Phase of the project and on the development of a system that meets stakeholder requirements while minimizing cost and schedule. However, a lack of consideration of whole-of-life aspects can often lead to larger-than-expected costs in the Utilization Phase, which must then be met from budgets that are insufficient to keep systems in service.</p>
+<p>A life-cycle focus requires a focus on the capability system, not on the product.</p>
+<h3 id="1-5-4-System-Optimization-and-Balance"><a href="#1-5-4-System-Optimization-and-Balance" class="headerlink" title="1.5.4 System Optimization and Balance"></a>1.5.4 System Optimization and Balance</h3><p>A system architecture must represent a balance between a large number of requirements and constraints that, in addition to technical considerations, cover a wide range of factors such as environmental, economic, human factors, moral, ethical, social, cultural, psychological, and more. A simple but essential example is the balance between cost and performance—if either is allowed to dominate, it will generally be at the expense of the other.</p>
+<p>Balance in system design must also be achieved across the life cycle. Metrics like cost-effectiveness should be measured across all phases, not just in acquisition. Often, cost savings made in acquiring the system are later offset by significant maintenance and repair costs during its service life.</p>
+<p>Systems engineering plays a crucial role in ensuring balance among the various system components. It is essential that optimization and balance are managed at the system level. It does not necessarily follow that optimizing each subsystem will lead to an optimized overall system. Consequently, some subsystems may need to be intentionally limited to allow their combination to yield an optimal system.</p>
+<p>A further advantage of the top-down approach in systems engineering is that system optimization and balance can be achieved as a natural outcome of the design process—something not guaranteed in a bottom-up design approach.</p>
+<h3 id="1-5-5-Integration-of-Disciplines-and-Specializations"><a href="#1-5-5-Integration-of-Disciplines-and-Specializations" class="headerlink" title="1.5.5 Integration of Disciplines and Specializations"></a>1.5.5 Integration of Disciplines and Specializations</h3><p>Systems engineering aims to manage and integrate the efforts of a multitude of technical disciplines and specialties to ensure that all stakeholder requirements are adequately addressed. Rarely is it possible for a complicated system to be designed by a single discipline.</p>
+<p>Consider, for example, the development of an aircraft. While aeronautical engineers may play a major role, the design, development, and production of a modern aircraft system require a wide variety of other engineering disciplines, including electrical&#x2F;electronics, safety, EMI&#x2F;EMC, production, metallurgical, and corrosion engineering. Additionally, other engineering fields are necessary for testing, logistics, and maintenance support, as well as for designing and building facilities such as runways, hangars, refueling stations, and embarkation&#x2F;disembarkation areas.</p>
+<p>Beyond engineering, non-engineering disciplines contribute to areas like marketing, finance, accounting, legal compliance, and environmental concerns. In short, the development of a single aircraft system may involve hundreds or even thousands of professionals from various disciplines.</p>
+<p>The aim of systems engineering is to define tasks for these diverse disciplines and specialties and to manage their integration to produce a system that meets user requirements. This integration role is increasingly important in modern system developments due to the complexity of large projects, diverse contracting mechanisms, and the geographic dispersion of contractor and subcontractor teams across the country and around the world.</p>
+</blockquote>
+</details>
+
+<h2 id="1-6-系统工程的相关性"><a href="#1-6-系统工程的相关性" class="headerlink" title="1.6 系统工程的相关性"></a>1.6 系统工程的相关性</h2><p>同上，这里原文写得很好，我不再赘述，这里放上原文：</p>
+<blockquote>
+<p>系统工程的原则和流程适用于各种项目，尽管应用程度有所不同。系统工程原则和方法最明显的应用是在大型复杂项目中。然而，较小且不那么复杂的项目也可以通过定制的系统工程方法受益。由于其广泛的适用性，理解系统工程的优点并根据项目的相对规模、复杂性和风险进行适当调整显得尤为重要 (apply them in a tailored manner, cognizant of the relative size, complexity, and risks associated with each undertaking.)。</p>
+<p>在应用范围的一端是使用前沿开发技术的大型复杂项目，这些项目通常涉及巨额资金、较长的时间周期和显著的风险。而在范围的另一端是使用现有技术的小型项目，这些项目通常周期较短、成本较低，风险也较小。显然，这两种类型的项目所需的系统工程深度不同，我们在此讨论的各个方面都需要针对每个项目进行相应的调整。</p>
+</blockquote>
+<h2 id="1-7-系统工程的优点"><a href="#1-7-系统工程的优点" class="headerlink" title="1.7 系统工程的优点"></a>1.7 系统工程的优点</h2><p>ChatGPT-4o将系统工程的主要优势总结为：</p>
+<ol>
+<li><p><strong>成本节约</strong>：系统工程通过全生命周期成本管理，可以在系统的设计、建造、使用、支持及报废等阶段节省大量费用。尽管早期的系统工程工作可能带来一定的成本增加，但经验表明，这种投资通常能在后期阶段带来更大的节约。</p>
+</li>
+<li><p><strong>缩短开发周期</strong>：系统工程帮助确保用户需求在设计中得到准确反映，从而减少后续更改需求所需的时间和成本。通过在设计初期评估可行的替代方案，系统工程能够更快地推进设计成熟度，缩短项目周期。</p>
+</li>
+<li><p><strong>减少系统故障和进度超支</strong>：系统工程通过严格的需求工程确保需求明确且可验证，避免因需求不当而导致的系统失败、超支和延期。需求管理过程注重保持对最初用户需求的可追溯性和一致性，而不会施加不必要的技术限制。</p>
+</li>
+<li><p><strong>降低技术风险</strong>：系统工程的严格方法在项目早期识别并管理技术风险，通过性能测量、设计评审和审计来追踪设计决策，显著减少项目后期可能出现的失败风险。</p>
+</li>
+<li><p><strong>提高系统质量</strong>：系统工程的纪律性确保项目最终的产品更加符合预期用途，满足用户的实际需求，从而提升系统的整体质量，确保系统按预期的高质量水平运行。</p>
+</li>
+</ol>
+<h2 id="课程反馈：如何真正理解系统工程"><a href="#课程反馈：如何真正理解系统工程" class="headerlink" title="课程反馈：如何真正理解系统工程"></a>课程反馈：如何真正理解系统工程</h2><h3 id="1-课程中的“本本主义”倾向"><a href="#1-课程中的“本本主义”倾向" class="headerlink" title="1. 课程中的“本本主义”倾向"></a>1. 课程中的“本本主义”倾向</h3><blockquote>
+<p>本本主义又称教条主义，是毛泽东1930年5月在《反对本本主义》中提出的一个概念。 毛泽东认为，在中国开展无产阶级革命，不讲究中国实际情况，生搬硬套马克思主义，就是本本主义。 – 本本主义- 维基百科</p>
+</blockquote>
+<p>当前课程对SyRS，RBS等系统工程概念反复强调，每位同学都被要求严格按照完整流程进行概念设计。这种方式让我感觉，我们可能是在一味执行流程，而没有真正理解这些流程存在的意义和背后的灵活性。</p>
+<p>在上周项目例会中，我询问大家对SyRS的实际体会时，几乎没有人给出积极的回答，多少反映了这套流程和我们实际的理解之间的落差。</p>
+<h3 id="2-《Introduction-to-Systems-Engineering》带来的思考"><a href="#2-《Introduction-to-Systems-Engineering》带来的思考" class="headerlink" title="2. 《Introduction to Systems Engineering》带来的思考"></a>2. 《Introduction to Systems Engineering》带来的思考</h3><p>用了一个晚课的时间，我读了<a target="_blank" rel="noopener" href="https://www.argospress.com/books/introduction-to-systems-engineering">《INTRODUCTION TO SYSTEMS ENGINEERING》</a>的第一章，因为课上已经多次提到前面的概念，我直接从1.6和1.7节开始。下课后我发现，系统工程原来还挺不错的。作者在1.6节中提到：“关键在于理解系统工程的优势，并根据项目的规模和复杂性灵活应用。” (it is critical to understand the merits of systems engineering apply them in a tailored manner, cognizant of the relative size, complexity, and risks associated with each undertaking.) 这种方法一下子点醒了我，也让我意识到，系统工程不仅仅是晦涩的流程和抽象概念，核心是让我们去解决“cost overruns, and schedule problems”这些项目中的实际问题——这些也恰恰是我在过去项目中遇到的难题。</p>
+<p>基于我的阅读体验，我相信其他同学也会从这本书中获得类似的收获，尤其是当他们能够体会到系统工程不仅是概念，而是有实际的应用价值。</p>
+<h3 id="3-一些可能的改进"><a href="#3-一些可能的改进" class="headerlink" title="3. 一些可能的改进"></a>3. 一些可能的改进</h3><blockquote>
+<p>一个好的Code Review不仅仅是指出代码中的问题，更应该提供具体的改进建议或示例代码，让开发者明确知道如何提升代码质量</p>
+</blockquote>
+<ul>
+<li><p><strong>“先理解，再操作”</strong>：我们可以试试换一种顺序，先让大家读一读书中的关键章节，特别是那些能直接应用在项目上的内容。比如让大家自己翻译一部分书里的内容，带着问题来课堂讨论。这样，学到的东西会更具体，理解也会更深，比一上来就记一堆术语要有效得多。</p>
+</li>
+<li><p><strong>回顾过去的“翻车”项目，增加代入感</strong>：可以设计一次作业，让我们回顾一下之前做的失败项目（比如一些思政课小组作业、编程课的组队作业……大家应该都有不少“翻车”经验吧）。通过这种方式，让同学们自己分析那些项目到底哪儿出了问题，然后再思考如果用系统工程的方法能不能解决点什么问题。这样一来，不但能让我们更有兴趣，也能让大家感觉到学的东西不是“纸上谈兵”。</p>
+</li>
+<li><p><strong>因地制宜的项目流程设计</strong>：可以借用书中的思路，让同学们按照自己项目的实际情况，去裁剪系统工程流程。比如，我们可以定位自己项目在复杂度光谱上的位置，然后一起来讨论哪些流程步骤真正有必要，哪些可以简化。这个评估和裁剪的过程本身就是学习如何实际应用系统工程的关键，让我们明白系统工程不是单一的“标准答案”，而是能够灵活适应不同项目需求的工具。</p>
+</li>
+</ul>
+<p>这样一来，我们的学习不只是“跟着流程走”，而是学会分析和应用，最终理解系统工程的真正优势和适用边界。希望这些反馈对课程设计有所帮助。</p>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/SDiM/">SDiM</a>
+        </span>
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/Reflection-Paper/">Reflection Paper</a>
+        </span>
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/Study-Note/">Study Note</a>
+        </span>
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/SUSTech/">SUSTech</a>
+        </span>
+      
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+        <a href="/2024/11/29/reverse-engineering-of-sustech-dorm/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          南科大宿舍门锁逆向工程实验
+        </a>
+      
+    </div>
+    <div>
+      
+        <a href="/2024/11/07/embedded-joke-01/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          嵌入式笑话一则
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>
